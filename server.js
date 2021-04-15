@@ -12,6 +12,7 @@ const app = uws.App().ws("/*", {
   // Function that runs on open, takes in ws parameter, subscribes to ROOM1
   open: (ws) => {
     ws.subscribe(ROOM1);
+    console.log("User connected");
   },
 
   message: (ws, message) => {
@@ -28,4 +29,5 @@ app.listen(PORT, (listenSocket) => {
   }
 });
 
-// in CMD type node server.js to being listening to the port
+// In CMD type node server.js to begin listening to the port, user connection will be shown here
+// In another CMD type npm run dev to compile and start the site, open on localhost:3000, websocket connection will be shown here
