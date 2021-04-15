@@ -10,6 +10,10 @@ export default function Home() {
     connectToWebSocket();
   }, []);
 
+  const [connected, setConnected] = useState(false);
+  const [message, setMessage] = useState("");
+  const [log, setLog] = useState([]);
+
   function connectToWebSocket() {
     const url = "ws://localhost:5555"; // Note this is ws, not https. Can also be wss for more security, but server requires certificates
     websocket = new WebSocket(url); // Connects and saves url to websocket
@@ -21,6 +25,8 @@ export default function Home() {
 
     websocket.onmessage = () => {
       console.log(e.data); // Logs the message event data(the message) and logs it
+      const logUpdate = [...log, e.data];
+      setLog([...log, e.data]);
     };
 
     websocket.onclose = () => {
@@ -33,11 +39,22 @@ export default function Home() {
     };
   }
 
-  const [connected, setConnected] = useState(false);
+  function sendMessage(e) {
+    e.preventDefault();
+    websocket.send(message);
+    // setMessage("");
+  }
 
   return (
     <div className={styles.container}>
       {connected ? "Connected" : "Offline"}
+      <form onSubmit={sendMessage}>
+        <input type="text" onChange={(e) => setMessage(e.target.value)} />
+        <button type="submit">Send</button>
+      </form>
+      {log.map((item) => {
+        return <div>{item}</div>;
+      })}
     </div>
   );
 }
