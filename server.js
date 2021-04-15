@@ -27,3 +27,5 @@ app.listen(PORT, (listenSocket) => {
     console.log("Listening to port " + PORT);
   }
 });
+
+// in CMD type node server.js to being listening to the port
